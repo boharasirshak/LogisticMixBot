@@ -1,0 +1,42 @@
+name: Continuous Integration
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  nodejs:
+    name: Setup Node
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+
+      - name: Install Pnpm
+        run: cd app && npm i -g pnpm
+
+      - name: Install Dependencies
+        run: cd app && pnpm install
+
+      - name: Run
+        run: cd app && npm run build
+
+  python:
+      name: Setup Python
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - name: Setup Python 3.10
+          uses: actions/setup-python@v3
+          with:
+            python-version: "3.10"
+      
+        - name: Install Dependencies
+          run: cd bot && pip install -r requirements.txt
